@@ -1,0 +1,20 @@
+[
+  {
+    "id": "d9b7c3a4-8f22-45e0-bf12-7a6e5d4c3b21",
+    "name": "Project Manager",
+    "username": "pm_architect",
+    "email": "architect@example.com",
+    "password_hash": "$2a$12$Q1wE3rT5yU7iO9pA2sD4fG6hJ8kL0zX2cV4bN6mM8qW1eR3tY5uI",
+    "created_at": "2026-04-02T09:15:00Z",
+    "updated_at": "2026-04-02T09:15:00Z"
+  },
+  {
+    "id": "e4c6f8b1-1d90-4c77-8a45-9f2d6e3b7a55",
+    "name": "Test User",
+    "username": "test_user",
+    "email": "test.user@example.com",
+    "password_hash": "$2a$12$Z9xC7vB5nM3qW1eR4tY6uI8oP0aS2dF4gH6jK8lL0mN2bV4cX6z",
+    "created_at": "2026-04-01T12:45:00Z",
+    "updated_at": "2026-04-01T12:45:00Z"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ps_01HZ8KQXR3N7VWJM4CBDT6YF2A",
+    "scannedAt": "2025-03-12T09:14:33Z",
+    "documentType": "PASSPORT",
+    "imageUri": "file:///data/user/0/com.aishavllp.PocketScan/cache/scan_01.jpg",
+    "mrz": {
+      "line1": "P<USASMITH<<JAMES<ROBERT<<<<<<<<<<<<<<<<<<<<<",
+      "line2": "1234567890USA8501157M3001012<<<<<<<<<<<<<<<4"
+    },
+    "parsed": {
+      "surname": "SMITH",
+      "givenNames": "JAMES ROBERT",
+      "nationality": "USA",
+      "dateOfBirth": "1985-01-15",
+      "sex": "M",
+      "expiryDate": "2030-01-20",
+      "documentNumber": "123456789",
+      "personalNumber": ""
+    }
+  },
+  {
+    "id": "ps_02JA9LRYS4P8WXKN5DCEU7ZG3B",
+    "scannedAt": "2025-03-18T14:52:07Z",
+    "documentType": "PASSPORT",
+    "imageUri": "file:///data/user/0/com.aishavllp.PocketScan/cache/scan_02.jpg",
+    "mrz": {
+      "line1": "P<GBRKHAN<<AISHA<NOOR<<<<<<<<<<<<<<<<<<<<<<<",
+      "line2": "ZX9847231GBR9206234F2802154<<<<<<<<<<<<<<<6"
+    },
+    "parsed": {
+      "surname": "KHAN",
+      "givenNames": "AISHA NOOR",
+      "nationality": "GBR",
+      "dateOfBirth": "1992-06-23",
+      "sex": "F",
+      "expiryDate": "2028-02-15",
+      "documentNumber": "ZX9847231",
+      "personalNumber": ""
+    }
+  },
+  {
+    "id": "ps_03KB0MSZT5Q9YXLO6EDFV8AH4C",
+    "scannedAt": "2025-03-25T11:03:49Z",
+    "documentType": "PASSPORT",
+    "imageUri": "file:///data/user/0/com.aishavllp.PocketScan/cache/scan_03.jpg",
+    "mrz": {
+      "line1": "P<CANPATEL<<RAVI<SURESH<<<<<<<<<<<<<<<<<<<<",
+      "line2": "AB7412650CAN7811089M2612030<<<<<<<<<<<<<<<8"
+    },
+    "parsed": {
+      "surname": "PATEL",
+      "givenNames": "RAVI SURESH",
+      "nationality": "CAN",
+      "dateOfBirth": "1978-11-08",
+      "sex": "M",
+      "expiryDate": "2026-12-03",
+      "documentNumber": "AB7412650",
+      "personalNumber": ""
+    }
+  },
+  {
+    "id": "ps_04LC1NTAU6R0ZYMP7FEGW9BI5D",
+    "scannedAt": "2025-04-01T08:27:15Z",
+    "documentType": "PASSPORT",
+    "imageUri": "file:///data/user/0/com.aishavllp.PocketScan/cache/scan_04.jpg",
+    "mrz": {
+      "line1": "P<AUSMUELLER<<SOPHIE<ANNA<<<<<<<<<<<<<<<<<<<",
+      "line2": "N52396718AUS9504212F2704301<<<<<<<<<<<<<<<2"
+    },
+    "parsed": {
+      "surname": "MULLER",
+      "givenNames": "SOPHIE ANNA",
+      "nationality": "AUS",
+      "dateOfBirth": "1995-04-21",
+      "sex": "F",
+      "expiryDate": "2027-04-30",
+      "documentNumber": "N52396718",
+      "personalNumber": ""
+    }
+  }
+]
