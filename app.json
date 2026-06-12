@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "hermes",
     "name": "PocketScan",
     "slug": "PocketScan",
     "version": "1.0.0",
@@ -19,7 +20,12 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.aishavllp.PocketScan"
+      "package": "com.aishavllp.PocketScan",
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "static",
@@ -48,14 +54,20 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow PocketScan to access your camera to scan documents.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to scan documents.",
           "microphonePermission": false
         }
-      ]
+      ],
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "46d46c2c-e406-4310-a8f4-22c0d52d047d"
+      }
     }
   }
 }
