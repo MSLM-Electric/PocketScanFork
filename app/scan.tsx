@@ -38,8 +38,13 @@ export default function ScanScreen() {
   const handleRetake = () => setCapturedUri(null);
 
   const handleUse = () => {
-    // TODO: pass capturedUri to document processing
-    router.back();
+    if (capturedUri) {
+ 	 // Переходим на экран результата и передаем ему URI снимка
+ 	 router.push({
+ 	   pathname: '/result',
+ 	   params: { uri: capturedUri }
+ 	 });
+    }
   };
 
   // Permission not yet determined
