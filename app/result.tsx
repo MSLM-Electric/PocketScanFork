@@ -1,5 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import * as TextRecognition from 'expo-text-recognition';
+//import * as TextRecognition from 'expo-text-recognition';
+import * as TextExtractor from 'expo-text-extractor';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, ScrollView, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -24,20 +25,35 @@ export default function ResultScreen() {
         return;
       }
 
+    //   try {
+    //     // Запускаем распознавание текста на устройстве
+    //     //const result = await TextRecognition.recognizeText(uri);
+    //     if (result && result.text) {
+    //       setRecognizedText(result.text);
+    //     } else {
+    //       setRecognizedText('Текст на изображении не найден.');
+    //     }
+    //   } catch (error) {
+    //     //console.error('Ошибка распознавания:', error);
+		// console.log('Ошибка распознавания:', error);
+    //     setRecognizedText('Произошла ошибка при обработке изображения.');
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // Внутри компонента, в асинхронной функции recognizeText:
       try {
-        // Запускаем распознавание текста на устройстве
-        const result = await TextRecognition.recognizeText(uri);
-        if (result && result.text) {
-          setRecognizedText(result.text);
+        // Функция возвращает массив строк, где каждый элемент - распознанный фрагмент
+        const textBlocks: string[] = await TextExtractor.extractTextFromImage(uri);
+        if (textBlocks && textBlocks.length > 0) {
+          // Объединяем все фрагменты в один текст, разделяя их переносом строки
+          const fullText = textBlocks.join('\n');
+          setRecognizedText(fullText);
         } else {
           setRecognizedText('Текст на изображении не найден.');
         }
       } catch (error) {
-        //console.error('Ошибка распознавания:', error);
-		console.log('Ошибка распознавания:', error);
+        console.log('Ошибка распознавания:', error);
         setRecognizedText('Произошла ошибка при обработке изображения.');
-      } finally {
-        setIsLoading(false);
       }
     };
 

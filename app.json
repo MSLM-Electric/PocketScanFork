@@ -54,10 +54,9 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to scan documents.",
-          "microphonePermission": false
+          "cameraPermission": "Allow PocketScan to access your camera to scan documents."
         }
-      ],
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

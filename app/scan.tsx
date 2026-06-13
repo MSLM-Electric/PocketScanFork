@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,7 +17,10 @@ import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Alert } from 'react-native';
 
+
 export default function ScanScreen() {
+  Alert.alert('Start')
+  console.log('ScanScreen вход?');
   const [permission, requestPermission] = useCameraPermissions();
   const [capturedUri, setCapturedUri] = useState<string | null>(null);
   const [capturing, setCapturing] = useState(false);
@@ -24,6 +28,7 @@ export default function ScanScreen() {
 
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = Colors[colorScheme];
+
 
   const handleCapture = async () => {
     if (!cameraRef.current || capturing) return;
@@ -39,13 +44,16 @@ export default function ScanScreen() {
   const handleRetake = () => setCapturedUri(null);
 
   const handleUse = () => {
+      console.log('1');
+  Alert.alert('test', 'click');
+  console.log('2');
     console.log('handleUse started...');
     Alert.alert('DEBUG', 'Кнопка нажата');
-  if (capturedUri) {
-    router.push({ pathname: '/result', params: { uri: capturedUri } });
-  } else {
-    Alert.alert('Ошибка', 'capturedUri = null');
-  }
+  // if (capturedUri) {
+  //   router.push({ pathname: '/result', params: { uri: capturedUri } });
+  // } else {
+  //   Alert.alert('Ошибка', 'capturedUri = null');
+  // }
   };
 
   // Permission not yet determined
@@ -92,12 +100,7 @@ export default function ScanScreen() {
             <IconSymbol name="arrow.counterclockwise" size={20} color={colors.tint} />
             <Text style={[styles.actionLabel, { color: colors.tint }]}>Retake</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.actionButton, { backgroundColor: colors.tint }]}
-            onPress={handleUse}>
-            <IconSymbol name="checkmark" size={20} color="#fff" />
-            <Text style={[styles.actionLabel, { color: '#fff' }]}>Use Document</Text>
-          </TouchableOpacity>
+          <Button title="Use Document" onPress={handleUse} color={colors.tint} />
         </SafeAreaView>
       </View>
     );
@@ -116,6 +119,7 @@ export default function ScanScreen() {
         </View>
       </CameraView>
 
+      <Button title="ТЕСТ" onPress={handleUse} />
       <SafeAreaView edges={['bottom', 'top']} style={styles.controls}>
         <TouchableOpacity style={styles.closeButton} onPress={() => router.back()}>
           <IconSymbol name="xmark" size={22} color="#fff" />

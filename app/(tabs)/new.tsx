@@ -20,6 +20,7 @@ import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function NewScreen() {
+  console.log('New Screen enter');
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = Colors[colorScheme];
 
