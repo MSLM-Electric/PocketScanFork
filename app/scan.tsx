@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Alert } from 'react-native';
 
 export default function ScanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -38,13 +39,13 @@ export default function ScanScreen() {
   const handleRetake = () => setCapturedUri(null);
 
   const handleUse = () => {
-    if (capturedUri) {
- 	 // Переходим на экран результата и передаем ему URI снимка
- 	 router.push({
- 	   pathname: '/result',
- 	   params: { uri: capturedUri }
- 	 });
-    }
+    console.log('handleUse started...');
+    Alert.alert('DEBUG', 'Кнопка нажата');
+  if (capturedUri) {
+    router.push({ pathname: '/result', params: { uri: capturedUri } });
+  } else {
+    Alert.alert('Ошибка', 'capturedUri = null');
+  }
   };
 
   // Permission not yet determined
@@ -105,7 +106,7 @@ export default function ScanScreen() {
   // Live camera view
   return (
     <View style={styles.container}>
-      <CameraView ref={cameraRef} style={styles.camera} facing="back">
+      <CameraView ref={cameraRef} style={StyleSheet.absoluteFillObject} facing="back">
         {/* Document frame guide */}
         <View style={styles.frameGuide}>
           <View style={[styles.corner, styles.topLeft]} />

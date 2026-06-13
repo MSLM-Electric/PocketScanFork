@@ -15,6 +15,8 @@ export default function ResultScreen() {
   const colors = Colors[colorScheme];
 
   useEffect(() => {
+    console.log('Сработал useEffect')
+	console.log('URI:', uri)
     const recognizeText = async () => {
       if (!uri) {
         setRecognizedText('Ошибка: URI изображения отсутствует.');
@@ -31,7 +33,8 @@ export default function ResultScreen() {
           setRecognizedText('Текст на изображении не найден.');
         }
       } catch (error) {
-        console.error('Ошибка распознавания:', error);
+        //console.error('Ошибка распознавания:', error);
+		console.log('Ошибка распознавания:', error);
         setRecognizedText('Произошла ошибка при обработке изображения.');
       } finally {
         setIsLoading(false);

@@ -7,6 +7,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import passports from '@/repo/passport.json';
+import { Button } from 'react-native';
 
 type Passport = (typeof passports)[number];
 
@@ -57,6 +58,12 @@ export default function HomeScreen() {
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = Colors[colorScheme];
 
+  console.log('Главный экран загружен');
+
+  const testLog = () => {
+    console.log('Нажата кнопка');
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       <View style={styles.header}>
@@ -66,6 +73,11 @@ export default function HomeScreen() {
         <Text style={[styles.subtitle, { color: colors.icon }]}>
           {passports.length} scanned
         </Text>
+      </View>
+
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>PocketScan</Text>
+        <Button title="Test Log" onPress={testLog} />
       </View>
 
       <FlatList
