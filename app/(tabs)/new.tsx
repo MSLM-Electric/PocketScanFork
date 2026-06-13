@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
@@ -37,6 +38,13 @@ export default function NewScreen() {
       if (photo) setCapturedUri(photo.uri);
     } finally {
       setCapturing(false);
+    }
+  };
+
+  const handleUse = () => {
+    console.log('handleUse запустился!')
+    if (capturedUri) {
+      router.push({ pathname: '/result', params: { uri: capturedUri } });
     }
   };
 
@@ -111,7 +119,7 @@ export default function NewScreen() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.actionButton, { backgroundColor: colors.tint }]}
-                onPress={handleClose}>
+                onPress={handleUse}>
                 <IconSymbol name="checkmark" size={20} color="#fff" />
                 <Text style={[styles.actionLabel, { color: '#fff' }]}>Use Document</Text>
               </TouchableOpacity>
@@ -129,7 +137,7 @@ export default function NewScreen() {
               </View>
             </CameraView>
             <SafeAreaView edges={['top', 'bottom']} style={styles.controls} pointerEvents="box-none">
-              <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+              <TouchableOpacity style={styles.closeButton} onPress={handleUse}>
                 <IconSymbol name="xmark" size={22} color="#fff" />
               </TouchableOpacity>
               <Text style={styles.hint}>Align document within the frame</Text>
