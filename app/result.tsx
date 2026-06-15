@@ -1,5 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import * as TextExtractor from 'expo-text-extractor';
+import MlkitOcr from 'rn-mlkit-ocr';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, ScrollView, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -24,9 +25,9 @@ export default function ResultScreen() {
 
       try {
         // Запускаем распознавание текста на устройстве
-        const textBlocks = await TextExtractor.extractTextFromImage(uri);
-        if (textBlocks && textBlocks.length > 0) {
-          setRecognizedText(textBlocks.join('\n'));
+        const result = await MlkitOcr.recognizeText(uri, 'latin');
+        if (result && result.text) {
+          setRecognizedText(result.text);
         } else {
           setRecognizedText('Текст на изображении не найден.');
         }

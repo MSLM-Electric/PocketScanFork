@@ -58,6 +58,12 @@
           "microphonePermission": false
         }
       ],
+      [
+        "rn-mlkit-ocr",
+        {
+          "ocrModels": ["latin"]
+        }
+      ],
     ],
     "experiments": {
       "typedRoutes": true,
