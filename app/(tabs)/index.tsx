@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View, Modal, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ThemedText } from '@/components/themed-text';
@@ -9,9 +9,9 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import passports from '@/repo/passport.json';
+import { saveLicense, getLicenses } from '@/app/services/licenseApi';
 
-import { useFocusEffect } from 'expo-router';
-import { useCallback } from 'react';
+import { useFocusEffect, useNavigation } from 'expo-router';
 
 type Passport = (typeof passports)[number];
 
@@ -89,13 +89,27 @@ export default function HomeScreen() {
     }, [])
   );
 
-  useEffect(() => {
-    console.log('Загружено прав при входе в приложение:', licenses);
-    loadLicenses();
-    // Обновление при возврате на этот экран
-    const unsubscribe = router.events?.on('focus', loadLicenses);
-    return () => unsubscribe?.();
-  }, []);
+const navigation = useNavigation();
+
+const fetchLicenses = async () => {
+  const serverData = await getLicenses();
+  setLicenses(serverData);
+};
+
+useEffect(() => {
+  loadLicenses();
+  const unsubscribe = router.events?.on('focus', loadLicenses);
+  
+  navigation.setOptions({
+    headerRight: () => (
+      <TouchableOpacity onPress={fetchLicenses}>
+        <IconSymbol name="arrow.clockwise" size={24} color={colors.tint} />
+      </TouchableOpacity>
+    ),
+  });
+
+  return () => unsubscribe?.();
+}, [navigation]); // зависимости: navigation (без fetchLicenses, т.к. он стабилен)
 
   const deleteLicense = async (id: string) => {
     Alert.alert(

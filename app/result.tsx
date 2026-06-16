@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MlkitOcr from 'rn-mlkit-ocr';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { saveLicense, getLicenses } from '@/app/services/licenseApi';
 
 // Разрешённые категории (отсортированы по убыванию длины)
 const ALLOWED_CATEGORIES = ['DE', 'CE', 'D1', 'C1', 'B1', 'A1', 'D', 'C', 'B', 'A', 'M', 'T'];
@@ -52,9 +53,9 @@ function extractFieldsFromText(fullText: string) {
 
   // Стоп-слова
   const stopWords = new Set([
-    'RUS', 'PECA.', 'GIBDD', 'RESP.', 'BASHKORTOSTAN', 'TADZHIKISTAN',
+    'RUS', 'PECA.', 'GIBDD', 'RESP.', 'BASHKORTOSTAN', 'TADZHIKISTAN', 'TATARSTAN',
     'TAAKMKMCTAH', 'PERMIS', 'DE', 'CONDUIRE', 'DRIVING', 'LICENCE',
-    'BOAMTENbCKOE', 'YI0CTOBEPEHME', '5AUKOPTOCTAH',
+    'BOAMTENbCKOE', 'YI0CTOBEPEHME', '5AUKOPTOCTAH', 'PERMIS DE CONDUIRE', 'DRIVING LiCENSE',
     '1.', '2', '3.', '4a)', '4b)', '4c)', '5.', '6.', '8.', '9.'
   ]);
 
@@ -171,6 +172,7 @@ export default function ResultScreen() {
       };
       licenses.push(newLicense);
       await AsyncStorage.setItem('drivingLicenses', JSON.stringify(licenses));
+	    await saveLicense(extractedFields);
       Alert.alert('Успех', 'Документ сохранён', [
         { text: 'OK', onPress: () => router.back() },
       ]);
