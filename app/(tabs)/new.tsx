@@ -134,7 +134,7 @@ export default function NewScreen() {
                 style={[styles.actionButton, { backgroundColor: colors.tint }]}
                 onPress={handleUse}>
                 <IconSymbol name="checkmark" size={20} color="#fff" />
-                <Text style={[styles.actionLabel, { color: '#9f9af0' }]}>Use Document</Text>
+                <Text style={[styles.actionLabel, { color: '#9f9af0' }]}>Распознавать</Text>
               </TouchableOpacity>
             </SafeAreaView>
           </View>
@@ -169,6 +169,8 @@ export default function NewScreen() {
     </>
   );
 }
+
+//Комментарии: "Use document" был переименован на "Распознавать"
 
 const CORNER = 28;
 const BORDER = 3;
