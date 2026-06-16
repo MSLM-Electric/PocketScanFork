@@ -1,8 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import * as TextExtractor from 'expo-text-extractor';
+//import * as TextExtractor from 'expo-text-extractor';
+import MlkitOcr from 'rn-mlkit-ocr';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, ScrollView, View, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, ScrollView, View, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
@@ -11,8 +13,63 @@ export default function ResultScreen() {
   const { uri } = useLocalSearchParams<{ uri: string }>();
   const [recognizedText, setRecognizedText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+    const [extractedFields, setExtractedFields] = useState<null | {
+    fullName: string;
+    birthDate: string;
+    docNumber: string;
+    category: string;
+  }>(null);
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = Colors[colorScheme];
+
+
+  // Извлечение полей по жёстко заданным индексам
+  const extractFieldsFromBlocks = (blocks: any[]) => {
+    try {
+      // Фамилия и имя (индексы из вашего примера)
+      const surname = blocks[2]?.lines[1]?.text || '';
+      const firstName = blocks[2]?.lines[3]?.text || '';
+      const fullName = `${surname} ${firstName}`.trim();
+      // Дата рождения
+      const birthDate = blocks[2]?.lines[5]?.text || '';
+      // Серия документа (номер)
+      const docNumber = blocks[8]?.lines[0]?.text || '';
+      // Категория
+      const category = blocks[12]?.lines[0]?.text || '';
+
+      return { fullName, birthDate, docNumber, category };
+    } catch (error) {
+      console.error('Ошибка извлечения полей:', error);
+      return null;
+    }
+  };
+
+  // Сохранение документа в AsyncStorage
+  const saveDocument = async () => {
+    if (!extractedFields) {
+      Alert.alert('Ошибка', 'Нет данных для сохранения');
+      return;
+    }
+    try {
+      const existing = await AsyncStorage.getItem('drivingLicenses');
+      const licenses = existing ? JSON.parse(existing) : [];
+      const newLicense = {
+        id: Date.now().toString(),
+        ...extractedFields,
+        createdAt: new Date().toISOString(),
+      };
+      licenses.push(newLicense);
+      await AsyncStorage.setItem('drivingLicenses', JSON.stringify(licenses));
+      console.log('Сохранено:', licenses);
+      Alert.alert('Успех', 'Документ сохранён', [
+        { text: 'OK', onPress: () => router.back() },
+      ]);
+    } catch (error) {
+      console.error('Ошибка сохранения:', error);
+      Alert.alert('Ошибка', 'Не удалось сохранить документ');
+    }
+  };
+
 
   useEffect(() => {
     const recognizeText = async () => {
@@ -24,11 +81,13 @@ export default function ResultScreen() {
 
       try {
         // Запускаем распознавание текста на устройстве
-        const textBlocks = await TextExtractor.extractTextFromImage(uri);
-        if (textBlocks && textBlocks.length > 0) {
-          setRecognizedText(textBlocks.join('\n'));
+        const result = await MlkitOcr.recognizeText(uri, 'latin');
+        setRecognizedText(result.text || 'Текст не найден');
+        if (result.blocks) {
+          const fields = extractFieldsFromBlocks(result.blocks);
+          setExtractedFields(fields);
         } else {
-          setRecognizedText('Текст на изображении не найден.');
+          console.log('Нет блоков в результате');
         }
       } catch (error) {
         console.error('Ошибка распознавания:', error);
@@ -44,23 +103,24 @@ export default function ResultScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {isLoading ? (
-          <View style={styles.centerContent}>
-            <ActivityIndicator size="large" color={colors.tint} />
-            <Text style={[styles.loadingText, { color: colors.text }]}>Распознавание текста...</Text>
-          </View>
-        ) : (
-          <View style={styles.resultContent}>
-            <Text style={[styles.title, { color: colors.text }]}>Распознанный текст</Text>
-            <Text style={[styles.text, { color: colors.text }]}>
-              {recognizedText || 'Текст не распознан.'}
-            </Text>
-          </View>
-        )}
+        <Text style={[styles.title, { color: colors.text }]}>Распознанный текст</Text>
+        <Text style={[styles.text, { color: colors.text }]}>
+          {recognizedText || 'Текст не распознан.'}
+        </Text>
       </ScrollView>
-      <TouchableOpacity style={[styles.button, { backgroundColor: colors.tint }]} onPress={() => router.back()}>
-        <Text style={styles.buttonText}>Назад к камере</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: colors.tint, flex: 1, marginRight: 10 }]}
+          onPress={saveDocument}
+          disabled={!extractedFields}>
+          <Text style={styles.buttonText}>Сохранить документ</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: colors.tint, flex: 1 }]}
+          onPress={() => router.back()}>
+          <Text style={styles.buttonText}>Назад к камере</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -68,11 +128,16 @@ export default function ResultScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { flexGrow: 1, padding: 20 },
-  centerContent: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  resultContent: { flex: 1 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' },
   text: { fontSize: 16, lineHeight: 24 },
-  loadingText: { marginTop: 12, fontSize: 16 },
-  button: { margin: 20, paddingVertical: 14, borderRadius: 12, alignItems: 'center' },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+    buttonRow: {
+    flexDirection: 'row',
+    padding: 20,
+  },
+  button: {
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  buttonText: { color: '#9f9af0', fontSize: 18, fontWeight: 'bold' },
 });

@@ -111,6 +111,19 @@ export default function NewScreen() {
           <View style={styles.cameraContainer}>
             <Image source={{ uri: capturedUri }} style={styles.preview} resizeMode="contain" />
             <SafeAreaView edges={['bottom']} style={styles.previewActions}>
+              {/* Новая кнопка "Home" слева */}
+              <TouchableOpacity
+                style={[styles.actionButton, { borderColor: colors.tint, borderWidth: 1.5 }]}
+                onPress={() => {
+                  // Закрываем модальное окно камеры и переходим на главный экран
+                  setCameraOpen(false);
+                  setCapturedUri(null);
+                  router.replace('/(tabs)'); // или router.dismissAll() если нужно
+                }}>
+                <IconSymbol name="house.fill" size={20} color={colors.tint} />
+                <Text style={[styles.actionLabel, { color: colors.tint }]}>Home</Text>
+              </TouchableOpacity>
+
               <TouchableOpacity
                 style={[styles.actionButton, { borderColor: colors.tint, borderWidth: 1.5 }]}
                 onPress={() => setCapturedUri(null)}>
@@ -121,7 +134,7 @@ export default function NewScreen() {
                 style={[styles.actionButton, { backgroundColor: colors.tint }]}
                 onPress={handleUse}>
                 <IconSymbol name="checkmark" size={20} color="#fff" />
-                <Text style={[styles.actionLabel, { color: '#fff' }]}>Use Document</Text>
+                <Text style={[styles.actionLabel, { color: '#9f9af0' }]}>Use Document</Text>
               </TouchableOpacity>
             </SafeAreaView>
           </View>
