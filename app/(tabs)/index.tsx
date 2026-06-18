@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Modal, Alert } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Modal, Alert, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -82,6 +82,32 @@ export default function HomeScreen() {
       console.error('Ошибка загрузки прав:', error);
     }
   };
+
+  const testServerRequest = async () => {
+  try {
+    // 1. Тестовые данные для отправки
+    const testData = {
+      full_name: "Иванов Иван",
+      birth_date: "1990-01-01",
+      doc_number: "1234 567890",
+      category: "B"
+    };
+
+    // 2. Отправляем POST-запрос на сервер
+    const saved = await saveLicense(testData);
+    console.log('✅ Данные сохранены на сервере:', saved);
+
+    // 3. Получаем список всех записей с сервера
+    const allLicenses = await getLicenses();
+    console.log('📋 Все записи с сервера:', allLicenses);
+
+    Alert.alert('Успех', 'Тестовый запрос отправлен!');
+
+  } catch (error) {
+    console.error('❌ Ошибка при запросе к серверу:', error);
+    Alert.alert('Ошибка', 'Не удалось связаться с сервером.');
+  }
+};
 
   useFocusEffect(
     useCallback(() => {
@@ -193,6 +219,9 @@ useEffect(() => {
           )
         }
       />
+      <View style={{ padding: 20 }}>
+        <Button title="Тест сервера" onPress={testServerRequest} />
+      </View>
 
       {/* Модальное окно с деталями */}
       <Modal visible={modalVisible} animationType="slide" transparent onRequestClose={() => setModalVisible(false)}>

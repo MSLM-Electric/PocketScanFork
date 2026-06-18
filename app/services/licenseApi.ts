@@ -1,10 +1,10 @@
 // app/services/licenseApi.ts
-const BASE_URL = 'http://192.168.1.XX:3000/api'; // IP вашего компьютера в локальной сети
+const BASE_URL = 'http://10.161.35.189:3000/api'; // IP вашего компьютера в локальной сети
 
 export async function saveLicense(data: {
-  fullName: string;
-  birthDate: string;
-  docNumber: string;
+  full_name: string;
+  birth_date: string;
+  doc_number: string;
   category: string;
 }) {
   const response = await fetch(`${BASE_URL}/licenses`, {
