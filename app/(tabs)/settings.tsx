@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Appearance, StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
+import { Appearance, StyleSheet, Switch, TouchableOpacity, View, Text } from 'react-native';
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
@@ -84,6 +84,14 @@ export default function SettingsScreen() {
           <ThemedText style={[styles.rowLabel, { color: colors.icon }]}>Member since</ThemedText>
           <ThemedText style={styles.rowValue}>{CURRENT_USER.memberSince}</ThemedText>
         </View>
+      </View>
+
+      {/* Server settings */}
+      <View style={[styles.section, { borderColor: colors.icon + '33' }]}>
+        <TouchableOpacity style={styles.row} onPress={() => router.push('/server_page')}>
+          <ThemedText style={[styles.rowLabel, { color: colors.icon }]}>Настройки сервера</ThemedText>
+          <IconSymbol name="chevron.right" size={14} color={colors.icon} />
+        </TouchableOpacity>
       </View>
 
       {/* Preferences */}

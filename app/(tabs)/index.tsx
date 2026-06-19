@@ -9,7 +9,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import passports from '@/repo/passport.json';
-import { saveLicense, getLicenses } from '@/app/services/licenseApi';
+import { getLicenses } from '@/app/services/licenseApi';
 
 import { useFocusEffect, useNavigation } from 'expo-router';
 
@@ -82,32 +82,6 @@ export default function HomeScreen() {
       console.error('Ошибка загрузки прав:', error);
     }
   };
-
-  const testServerRequest = async () => {
-  try {
-    // 1. Тестовые данные для отправки
-    const testData = {
-      full_name: "Иванов Иван",
-      birth_date: "1990-01-01",
-      doc_number: "1234 567890",
-      category: "B"
-    };
-
-    // 2. Отправляем POST-запрос на сервер
-    const saved = await saveLicense(testData);
-    console.log('✅ Данные сохранены на сервере:', saved);
-
-    // 3. Получаем список всех записей с сервера
-    const allLicenses = await getLicenses();
-    console.log('📋 Все записи с сервера:', allLicenses);
-
-    Alert.alert('Успех', 'Тестовый запрос отправлен!');
-
-  } catch (error) {
-    console.error('❌ Ошибка при запросе к серверу:', error);
-    Alert.alert('Ошибка', 'Не удалось связаться с сервером.');
-  }
-};
 
   useFocusEffect(
     useCallback(() => {
@@ -219,9 +193,6 @@ useEffect(() => {
           )
         }
       />
-      <View style={{ padding: 20 }}>
-        <Button title="Тест сервера" onPress={testServerRequest} />
-      </View>
 
       {/* Модальное окно с деталями */}
       <Modal visible={modalVisible} animationType="slide" transparent onRequestClose={() => setModalVisible(false)}>
